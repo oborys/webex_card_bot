@@ -1,0 +1,47 @@
+{
+    "toPersonEmail": "USER_EMAIL",
+    "markdown": "Card",
+    "attachments": [
+        {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.0",
+                "body": [
+                    {
+                        "type": "Image",
+                        "altText": "",
+                        "url": "https://i.ibb.co/Yc7kzcH/webex-card.jpg"
+                    },
+                    {
+                        "type": "RichTextBlock",
+                        "inlines": [
+                            {
+                                "type": "TextRun",
+                                "text": "Here is Adaptive Card. In Webex, users can create, send and interact with Adaptive Cards. When a card is delivered to a specific app, the JSON is transformed into a native UI"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Input.Date",
+                        "id": "date",
+                        "placeholder": "Enter a date",
+                        "value": "04/03/2021"
+                    },
+                    {
+                        "type": "Input.Text",
+                        "placeholder": "Enter event name",
+                        "id": "input_text"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "Submit"
+                    }
+                ]
+            }
+        }
+    ]
+}

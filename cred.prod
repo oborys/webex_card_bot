@@ -1,0 +1,9 @@
+
+[Webex]
+
+# PASTE_BOT'S_ACCESS_TOKEN
+WEBEX_TEAMS_TOKEN = 
+WEBEX_BOT_EMAIL = 
+
+# Paste webhookUrl (port 5000)
+WEBEX_WEBHOOK_URL =  
