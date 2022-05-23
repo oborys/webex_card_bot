@@ -6,7 +6,7 @@ from api_interaction import *
 
 # read variables from config
 credential = configparser.ConfigParser()
-credential.read('cred.test')
+credential.read('cred.prod')
 
 
 # Import credential
