@@ -2,10 +2,11 @@ from flask import Flask, request
 import requests
 import json
 import configparser
+from api_interaction import *
 
 # read variables from config
 credential = configparser.ConfigParser()
-credential.read('cred.prod')
+credential.read('cred.test')
 
 
 # Import credential
@@ -15,6 +16,8 @@ botEmail = credential['Webex']['WEBEX_BOT_EMAIL']
 
 # WebhookUrl
 webhookUrl = credential['Webex']['WEBEX_WEBHOOK_URL']
+
+Meraki_API_KEY = credential['Webex']['Meraki_API_KEY']
 
 headers_bot = {
     "Accept": "application/json",
@@ -101,6 +104,24 @@ def postCard(personEmail):
     request = requests.post('https://webexapis.com/v1/messages', data=data, headers=headers_bot).json()
     print("POST CARD TO ", personEmail)
 
+def postCardDNAC(personEmail):
+    # open and read data from file as part of body for request
+    with open("adaptiveCardDNAC.json", "r", encoding="utf-8") as f:
+        data = f.read().replace('USER_EMAIL', personEmail)
+    # Add encoding, if you use non-Latin characters
+    data = data.encode("utf-8")
+    request = requests.post('https://webexapis.com/v1/messages', data=data, headers=headers_bot).json()
+    print("POST CARD TO ", personEmail)
+
+def postCardMeraki(personEmail):
+    # open and read data from file as part of body for request
+    with open("adaptiveCardMeraki.json", "r", encoding="utf-8") as f:
+        data = f.read().replace('USER_EMAIL', personEmail)
+    # Add encoding, if you use non-Latin characters
+    data = data.encode("utf-8")
+    request = requests.post('https://webexapis.com/v1/messages', data=data, headers=headers_bot).json()
+    print("POST CARD TO ", personEmail)
+
 @app.route('/', methods=['GET', 'POST'])
 def webex_webhook():
     if request.method == 'POST':
@@ -115,18 +136,31 @@ def webex_webhook():
             if in_message.startswith('/hi'):
                 personEmail = webhook['data']['personEmail']
                 postNotificationToPerson('Hi', personEmail)
+            elif in_message.startswith('/dnac'):
+                postCardDNAC(webhook['data']['personEmail'])
+            elif in_message.startswith('/post'):
+                postCardMeraki(webhook['data']['personEmail'])
             else:
                 postCard(webhook['data']['personEmail'])
 
         elif webhook['resource'] == 'attachmentActions':
             result = send_webex_get('https://webexapis.com/v1/attachment/actions/{}'.format(webhook['data']['id']))
-            print("Webhook ",result)
+            print("\n\n Result ", result)
             person = send_webex_get('https://webexapis.com/v1/people/{}'.format(result['personId']))
             personEmail = person["emails"][0]
             postNotificationToPerson("Bot received your answer", personEmail)
-            if (result['inputs']['date'] and result['inputs']['input_text']):
+            if (result['inputs']['type'] == 'event_card'):
                 responseText = "Your Email " + personEmail + "\n" + "Date in Adaptive Card: " + result['inputs']['date'] + "\n" + "Text in Adaptive Card: " + result['inputs']['input_text']
                 postNotificationToPerson(responseText, personEmail)
+            elif (result['inputs']['type'] == 'api_operation_card'):
+                reportText = SimpleAPIoperation(dnac_url)
+                postNotificationToPerson(reportText[1], personEmail)
+                postNotificationToPerson(reportText[0], personEmail)
+            elif (result['inputs']['type'] == 'api_operation_card_post'):
+                reportText = merakiPostOperation(result['inputs']['admin_email'])
+                postNotificationToPerson(reportText, personEmail)
+            elif (result['inputs']['type'] == '3rd_party'):
+                pass
 
         return "true"
     elif request.method == 'GET':

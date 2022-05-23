@@ -24,6 +24,12 @@
                         ]
                     },
                     {
+                        "type": "Input.Text",
+                        "id": "type",
+                        "value": "event_card",
+                        "isVisible": false
+                    },
+                    {
                         "type": "Input.Date",
                         "id": "date",
                         "placeholder": "Enter a date",

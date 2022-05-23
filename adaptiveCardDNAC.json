@@ -1,0 +1,61 @@
+{
+    "toPersonEmail": "USER_EMAIL",
+    "markdown": "Card",
+    "attachments": [
+        {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.0",
+                "body": [
+                    {
+                        "type": "Image",
+                        "altText": "",
+                        "url": "https://i.ibb.co/k62W8Cn/dna-c.png"
+                    },
+                    {
+                        "type": "RichTextBlock",
+                        "inlines": [
+                            {
+                                "type": "TextRun",
+                                "text": "Interaction with DNA-C API"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Input.Text",
+                        "id": "type",
+                        "value": "api_operation_card",
+                        "isVisible": false
+                    },
+                    {
+                        "type": "Input.Text",
+                        "placeholder": "Enter vlan name",
+                        "id": "vlan_name"
+                    },
+                    {
+                        "type": "Container",
+                        "separator": true,
+                        "items": [
+                            {
+                                "type": "ActionSet",
+                                "actions": [
+                                    {
+                                        "type": "Action.Submit",
+                                        "title": "GET API operation"
+                                    },
+                                    {
+                                        "type": "Action.OpenUrl",
+                                        "title": "View Card JSON",
+                                        "url": "https://github.com/oborys/webex_card_bot/blob/main/adaptiveCardDNAC.json"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -5,5 +5,7 @@
 WEBEX_TEAMS_TOKEN = 
 WEBEX_BOT_EMAIL = 
 
-# Paste webhookUrl (port 5000)
+# Paste webhookUrl (port 5000 or 80)
 WEBEX_WEBHOOK_URL =  
+
+Meraki_API_KEY = Api_key
